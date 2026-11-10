@@ -23,7 +23,7 @@ pipeline {
                         sh 'java -version'
                         sh 'javac -version'
                         sh 'chmod +x mvnw'
-                        sh './mvnw clean test'
+                        sh './mvnw clean package'
                     }
                 }
             }
