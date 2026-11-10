@@ -1,0 +1,37 @@
+
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: online-shopping-deployment
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: online-shopping
+
+  template:
+    metadata:
+      labels:
+        app: online-shopping
+
+    spec:
+      containers:
+        - name: online-shopping-container
+          image: online-shopping-app:latest
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 9191
+
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: DB_PASSWORD
+
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://host.minikube.internal:3306/shopping_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
