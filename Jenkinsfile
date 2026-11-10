@@ -39,6 +39,21 @@ stage('Build Docker Image') {
         }
     }
 }
+   stage('Deploy to Kubernetes') {
+    steps {
+        withEnv([
+            'HOME=/Users/psslipika',
+            'PATH=/Users/psslipika/.docker/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin'
+        ]) {
+            sh 'minikube status'
+            sh 'minikube image load online-shopping-app:latest'
+            sh 'kubectl apply -f deployment.yaml'
+            sh 'kubectl apply -f service.yaml'
+            sh 'kubectl rollout restart deployment/online-shopping-deployment'
+            sh 'kubectl rollout status deployment/online-shopping-deployment'
+        }
+    }
+}
 
     }
 
