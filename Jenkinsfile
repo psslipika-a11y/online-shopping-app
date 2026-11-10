@@ -28,6 +28,18 @@ pipeline {
                 }
             }
         }
+
+stage('Build Docker Image') {
+    steps {
+        withEnv([
+            'PATH=/Users/psslipika/.docker/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin'
+        ]) {
+            sh 'docker version'
+            sh 'docker build -t online-shopping-app .'
+        }
+    }
+}
+
     }
 
     post {
