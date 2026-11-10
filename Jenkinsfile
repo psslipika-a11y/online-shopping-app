@@ -16,6 +16,11 @@ pipeline {
                     credentialsId: 'mysql-db-password',
                     variable: 'DB_PASSWORD'
                 )]) {
+                    sh 'echo "JAVA_HOME=$JAVA_HOME"'
+                    sh 'which java'
+                    sh 'java -version'
+                    sh 'which javac || true'
+                    sh 'javac -version || true'
                     sh 'chmod +x mvnw'
                     sh './mvnw clean test'
                 }
