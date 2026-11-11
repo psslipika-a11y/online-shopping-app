@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Checkout</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <h1>Checkout</h1>
+
+    <h2>Enter Delivery Details</h2>
+
+    <form action="/place-order" method="post">
+
+        <label>Customer Name:</label><br>
+        <input type="text" name="customerName"
+               placeholder="Enter your name" required>
+        <br><br>
+
+        <label>Contact Number:</label><br>
+        <input type="tel" name="phone"
+               placeholder="Enter your contact number"
+               pattern="[0-9]{10}" required>
+        <br><br>
+
+        <label>Delivery Address:</label><br>
+        <textarea name="address"
+                  placeholder="Enter your complete delivery address"
+                  rows="4" required></textarea>
+        <br><br>
+
+        <button type="submit">Place Order</button>
+
+    </form>
+
+    <br>
+
+    <a href="/cart">Back to Shopping Cart</a>
+
+</body>
+</html>

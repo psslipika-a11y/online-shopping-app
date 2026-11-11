@@ -1,3 +1,4 @@
+
 package com.example.onlineshopping.model;
 
 import jakarta.persistence.Entity;
@@ -16,6 +17,7 @@ public class Product {
     private String description;
     private double price;
     private int quantity;
+    private String imageUrl;
 
     public Product() {
     }
@@ -62,5 +64,13 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

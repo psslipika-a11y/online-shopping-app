@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order Confirmation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <h1>Thank You for Your Order!</h1>
+
+    <h2>Your order has been placed successfully.</h2>
+
+    <h3>Order Details</h3>
+
+    <p>
+        <strong>Order ID:</strong>
+        <span th:text="${order.id}"></span>
+    </p>
+
+    <p>
+        <strong>Customer Name:</strong>
+        <span th:text="${order.customerName}"></span>
+    </p>
+
+    <p>
+        <strong>Contact Number:</strong>
+        <span th:text="${order.phone}"></span>
+    </p>
+
+    <p>
+        <strong>Delivery Address:</strong>
+        <span th:text="${order.address}"></span>
+    </p>
+
+    <p>
+        <strong>Order Date:</strong>
+        <span th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}"></span>
+    </p>
+
+    <h3>Purchased Products</h3>
+
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Price (₹)</th>
+                <th>Quantity</th>
+                <th>Subtotal (₹)</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="item : ${order.items}">
+                <td th:text="${item.productName}"></td>
+                <td th:text="${item.price}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${item.price * item.quantity}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>
+        Total Amount: ₹<span th:text="${order.totalAmount}"></span>
+    </h2>
+
+    <h3>Payment Method: Cash on Delivery (Demo)</h3>
+
+    <p>This is a simulated checkout for the project. No actual payment has been collected.</p>
+
+    <br>
+
+    <a href="/">Continue Shopping</a>
+
+</body>
+</html>
