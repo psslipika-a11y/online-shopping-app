@@ -35,3 +35,12 @@ spec:
 
             - name: SPRING_DATASOURCE_URL
               value: "jdbc:mysql://host.minikube.internal:3306/shopping_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+
+            - name: ADMIN_USERNAME
+              value: "admin"
+
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: admin-secret
+                  key: ADMIN_PASSWORD

@@ -12,6 +12,7 @@
     <h1>Thank You for Your Order!</h1>
 
     <h2>Your order has been placed successfully.</h2>
+    <p><strong>Status:</strong> <span th:text="${order.status}"></span></p>
 
     <h3>Order Details</h3>
 
@@ -74,5 +75,5 @@
 
     <a href="/">Continue Shopping</a>
 
-</body>
+<p><a th:href="@{/orders}">View My Orders</a> | <a th:href="@{/}">Continue Shopping</a></p>\n</body>
 </html>

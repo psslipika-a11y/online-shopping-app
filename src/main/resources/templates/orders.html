@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>My Orders</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body><main class="container"><h1>My Orders</h1>
+<p class="success" th:if="${message}" th:text="${message}"></p>
+<p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+<table><thead><tr><th>Order ID</th><th>Date</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
+<tbody><tr th:each="order : ${orders}">
+<td th:text="${order.id}"></td>
+<td th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}"></td>
+<td th:text="|₹${order.totalAmount}|"></td><td th:text="${order.status}"></td>
+<td><form th:if="${order.status == 'PLACED'}"
+ th:action="@{/orders/{id}/cancel(id=${order.id})}" method="post" class="table-form"
+ onsubmit="return confirm('Are you sure you want to cancel this order?');">
+<button type="submit" class="danger-button">Cancel Order</button></form>
+<span th:if="${order.status != 'PLACED'}">Not cancellable</span></td>
+</tr></tbody></table>
+<p th:if="${#lists.isEmpty(orders)}">You have not placed any orders yet.</p>
+<a class="primary-button" th:href="@{/}">Continue Shopping</a></main></body></html>

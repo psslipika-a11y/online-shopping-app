@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 
 @Entity
 public class Product {
@@ -17,6 +18,7 @@ public class Product {
     private String description;
     private double price;
     private int quantity;
+    @Column(columnDefinition = "LONGTEXT")
     private String imageUrl;
 
     public Product() {

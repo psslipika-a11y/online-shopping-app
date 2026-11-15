@@ -1,81 +1,142 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>Online Shopping Store</title>
+    <title>Online Shopping Web Application</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+
 <body>
 
-    <h1>Welcome to Online Shopping Store</h1>
+<header class="site-header">
+
+    <h1>Online Shopping Web Application</h1>
+
+    <nav>
+        <a th:href="@{/}">Home</a>
+
+        <a th:if="${isUser}" th:href="@{/cart}">Shopping Cart</a>
+
+        <a th:if="${isUser}" th:href="@{/orders}">My Orders</a>
+
+        <a th:if="${isAdmin}" th:href="@{/admin}">Admin Dashboard</a>
+
+        <a th:if="${!loggedIn}"
+           th:href="@{/login}"
+           class="auth-button">Login</a>
+
+        <a th:if="${!loggedIn}"
+           th:href="@{/register}"
+           class="auth-button register-button">Register</a>
+
+        <form th:if="${loggedIn}"
+              th:action="@{/logout}"
+              method="post"
+              class="nav-form">
+
+            <button type="submit" class="nav-button">Logout</button>
+
+        </form>
+    </nav>
+
+</header>
+
+<main class="container">
+
+    <section class="welcome">
+
+        <h2>Welcome to Online Shopping</h2>
+
+        <p>
+            Explore products, add your favourites to the cart,
+            and place your order.
+        </p>
+
+        <p th:if="${isAdmin}" class="role-label">
+            You are logged in as Admin.
+        </p>
+
+        <p th:if="${isUser}" class="role-label">
+            You are logged in as User.
+        </p>
+
+        <p th:if="${!loggedIn}">
+            Please
+            <a th:href="@{/login}" class="text-link" style="display:inline; padding:0; margin:0; background:transparent; color:#1769aa; text-decoration:underline; border:0; border-radius:0; box-shadow:none; font-size:inherit; font-weight:normal;">log in</a>
+            or
+            <a th:href="@{/register}" class="text-link" style="display:inline; padding:0; margin:0; background:transparent; color:#1769aa; text-decoration:underline; border:0; border-radius:0; box-shadow:none; font-size:inherit; font-weight:normal;">register</a>
+            to shop.
+        </p>
+
+        <a th:if="${isAdmin}"
+           class="primary-button"
+           th:href="@{/add-product}">
+            Add New Product
+        </a>
+
+    </section>
 
     <h2>Available Products</h2>
 
-    <a href="/add-product">Add New Product</a>
-    |
-    <a href="/cart">View Shopping Cart</a>
+    <div class="product-grid">
 
-    <table border="1" cellpadding="10">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Product Image</th>
-                <th>Product Name</th>
-                <th>Description</th>
-                <th>Price (₹)</th>
-                <th>Quantity</th>
-                <th>Action</th>
-            </tr>
-        </thead>
+        <article class="product-card" th:each="product : ${products}">
 
-        <tbody>
-            <tr th:each="product : ${products}">
-                <td th:text="${product.id}"></td>
+            <img th:if="${product.imageUrl != null and !product.imageUrl.isEmpty()}"
+                 th:src="${product.imageUrl}"
+                 th:alt="${product.name}">
 
-                <td>
-                    <img th:if="${product.imageUrl != null and !product.imageUrl.isEmpty()}"
-                         th:src="${product.imageUrl}"
-                         th:alt="${product.name}"
-                         width="100"
-                         height="100"
-                         style="object-fit: contain;">
+            <div class="no-image"
+                 th:if="${product.imageUrl == null or product.imageUrl.isEmpty()}">
+                No image available
+            </div>
 
-                    <span th:if="${product.imageUrl == null or product.imageUrl.isEmpty()}">
-                        No image available
-                    </span>
-                </td>
+            <h3 th:text="${product.name}"></h3>
 
-                <td th:text="${product.name}"></td>
-                <td th:text="${product.description}"></td>
-                <td th:text="${product.price}"></td>
-                <td th:text="${product.quantity}"></td>
+            <p th:text="${product.description}"></p>
 
-                <td>
-                    <form th:action="@{/cart/add/{id}(id=${product.id})}"
-                          method="post">
-                        <button type="submit"
-                                th:disabled="${product.quantity <= 0}">
-                            Add to Cart
-                        </button>
-                    </form>
+            <p class="price" th:text="|₹${product.price}|"></p>
 
-                    <br>
+            <p th:text="|Available quantity: ${product.quantity}|"></p>
 
-                    <a th:href="@{/delete-product/{id}(id=${product.id})}">
-                        Delete
-                    </a>
-                </td>
-            </tr>
+            <form th:if="${loggedIn and !isAdmin}"
+                  th:action="@{/cart/add/{id}(id=${product.id})}"
+                  method="post">
 
-            <tr th:if="${#lists.isEmpty(products)}">
-                <td colspan="7">
-                    No products available. Add your first product!
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                <button type="submit"
+                        th:disabled="${product.quantity <= 0}">
+                    Add to Cart
+                </button>
+
+            </form>
+
+            <p th:if="${!loggedIn}">
+                <a th:href="@{/login}">Login to add to cart</a>
+            </p>
+
+            <form th:if="${isAdmin}"
+                  th:action="@{/delete-product/{id}(id=${product.id})}"
+                  method="post"
+                  class="card-action"
+                  onsubmit="return confirm('Delete this product?');">
+
+                <button type="submit" class="danger-button">
+                    Delete Product
+                </button>
+
+            </form>
+
+        </article>
+
+    </div>
+
+    <p th:if="${#lists.isEmpty(products)}">
+        No products are available at the moment.
+    </p>
+
+</main>
 
 </body>
 </html>

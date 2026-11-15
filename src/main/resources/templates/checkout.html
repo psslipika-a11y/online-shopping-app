@@ -11,9 +11,9 @@
 
     <h1>Checkout</h1>
 
-    <h2>Enter Delivery Details</h2>
+    <h2>Enter Delivery Details</h2>\n    <p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
 
-    <form action="/place-order" method="post">
+    <form th:action="@{/place-order}" method="post">
 
         <label>Customer Name:</label><br>
         <input type="text" name="customerName"

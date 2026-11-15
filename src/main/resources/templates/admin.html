@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Admin Dashboard</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body><main class="container"><h1>Admin Dashboard</h1>
+<p>Manage the product catalogue and review customer orders.</p>
+<a class="primary-button" th:href="@{/add-product}">Add Product</a>
+<a class="primary-button secondary" th:href="@{/}">View Store</a>
+<h2>Customer Orders</h2>
+<table><thead><tr><th>Order ID</th><th>Customer</th><th>Username</th><th>Total</th><th>Status</th></tr></thead>
+<tbody><tr th:each="order : ${orders}">
+<td th:text="${order.id}"></td><td th:text="${order.customerName}"></td>
+<td th:text="${order.username}"></td><td th:text="|₹${order.totalAmount}|"></td>
+<td th:text="${order.status}"></td></tr></tbody></table>
+</main></body></html>

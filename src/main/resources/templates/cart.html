@@ -83,7 +83,7 @@
         Total Amount: ₹<span th:text="${total}"></span>
     </h2>
     <form th:if="${!#lists.isEmpty(cartItems)}"
-      action="/checkout"
+      th:action="@{/checkout}"
       method="get">
     <button type="submit">Proceed to Checkout</button>
 </form>
