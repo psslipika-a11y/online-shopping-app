@@ -1,19 +1,54 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>My Orders</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
-<body><main class="container"><h1>My Orders</h1>
-<p class="success" th:if="${message}" th:text="${message}"></p>
-<p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
-<table><thead><tr><th>Order ID</th><th>Date</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
-<tbody><tr th:each="order : ${orders}">
-<td th:text="${order.id}"></td>
-<td th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}"></td>
-<td th:text="|₹${order.totalAmount}|"></td><td th:text="${order.status}"></td>
-<td><form th:if="${order.status == 'PLACED'}"
- th:action="@{/orders/{id}/cancel(id=${order.id})}" method="post" class="table-form"
- onsubmit="return confirm('Are you sure you want to cancel this order?');">
-<button type="submit" class="danger-button">Cancel Order</button></form>
-<span th:if="${order.status != 'PLACED'}">Not cancellable</span></td>
-</tr></tbody></table>
-<p th:if="${#lists.isEmpty(orders)}">You have not placed any orders yet.</p>
-<a class="primary-button" th:href="@{/}">Continue Shopping</a></main></body></html>
+<head>
+    <title>My Orders</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="container orders-container">
+    <h1>My Orders</h1>
+    <p class="success" th:if="${message}" th:text="${message}"></p>
+    <p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+
+    <p th:if="${#lists.isEmpty(orders)}">You have not placed any orders yet.</p>
+
+    <section class="order-card" th:each="order : ${orders}">
+        <div class="order-heading">
+            <div>
+                <h2 th:text="|Order #${order.id}|">Order #1</h2>
+                <p class="order-date" th:text="|Placed on: ${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}|">Placed on</p>
+            </div>
+            <div class="order-summary">
+                <span class="order-status" th:classappend="${order.status == 'CANCELLED'} ? ' status-cancelled' : ' status-placed'" th:text="${order.status}">PLACED</span>
+                <strong th:text="|Total: ₹${order.totalAmount}|">Total</strong>
+            </div>
+        </div>
+
+        <div class="ordered-product" th:each="item : ${order.items}">
+            <img class="ordered-product-image"
+                 th:if="${item.productImageUrl != null and !#strings.isEmpty(item.productImageUrl)}"
+                 th:src="${item.productImageUrl}" th:alt="${item.productName}">
+            <div class="ordered-product-image image-placeholder"
+                 th:if="${item.productImageUrl == null or #strings.isEmpty(item.productImageUrl)}">No image</div>
+            <div class="ordered-product-details">
+                <h3 th:text="${item.productName}">Product name</h3>
+                <p th:text="|Quantity: ${item.quantity}|">Quantity</p>
+                <p th:text="|Price: ₹${item.price} each|">Price</p>
+                <strong th:text="|Subtotal: ₹${item.price * item.quantity}|">Subtotal</strong>
+            </div>
+        </div>
+
+        <div class="order-actions">
+            <form th:if="${order.status == 'PLACED'}"
+                  th:action="@{/orders/{id}/cancel(id=${order.id})}" method="post" class="table-form"
+                  onsubmit="return confirm('You are cancelling the entire order shown above. Are you sure?');">
+                <button type="submit" class="danger-button">Cancel This Order</button>
+            </form>
+            <span class="muted" th:if="${order.status != 'PLACED'}">This order cannot be cancelled.</span>
+        </div>
+    </section>
+
+    <a class="primary-button" th:href="@{/}">Continue Shopping</a>
+</main>
+</body>
+</html>

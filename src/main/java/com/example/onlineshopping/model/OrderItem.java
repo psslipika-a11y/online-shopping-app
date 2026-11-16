@@ -15,6 +15,9 @@ public class OrderItem {
 
     private String productName;
 
+    @Column(columnDefinition = "LONGTEXT")
+    private String productImageUrl;
+
     private double price;
 
     private int quantity;
@@ -36,6 +39,9 @@ public class OrderItem {
     public String getProductName() {
         return productName;
     }
+
+    public String getProductImageUrl() { return productImageUrl; }
+    public void setProductImageUrl(String productImageUrl) { this.productImageUrl = productImageUrl; }
 
     public void setProductName(String productName) {
         this.productName = productName;
